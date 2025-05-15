@@ -6,9 +6,11 @@ import com.example.back.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,14 +21,16 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
+@Configuration
+@EnableMethodSecurity
 public class WebSecurityConfig {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @Value("${openclassrooms.app.host}")
+    @Value("${example.app.host}")
     private String host;
 
-    @Value("${openclassrooms.app.ipHost}")
+    @Value("${example.app.ipHost}")
     private String ipHost;
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;

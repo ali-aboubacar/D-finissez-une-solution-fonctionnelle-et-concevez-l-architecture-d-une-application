@@ -1,0 +1,7 @@
+<div>
+    <div *ngFor="let msg of messages">
+      <strong>{{ msg.sender }}</strong>: {{ msg.content }} <small>({{ msg.timestamp }})</small>
+    </div>
+    <input [(ngModel)]="message" placeholder="Type a message..." />
+    <button (click)="send()">Send</button>
+  </div>

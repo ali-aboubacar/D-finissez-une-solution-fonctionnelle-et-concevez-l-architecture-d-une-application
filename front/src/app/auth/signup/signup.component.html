@@ -1,0 +1,31 @@
+<app-header></app-header>
+<div class="form-wrap">
+  <div class="header-wrap">
+    <i class="fa-solid fa-arrow-left fa-2xl  arrow-icon back-arrow" [routerLink]="['/']"></i>
+    <h2>Inscription</h2>
+  </div>
+    <form class="custom-form" [formGroup]="signUpFormGroup" (ngSubmit)="onSubmit()">
+        <label class="custom-label extra-margin-top" for="nameInput">Nom d’utilisateur</label>
+        <input class="custom-input" type="text" id="nameInput" formControlName="name">
+        <div *ngIf="signUpFormGroupControls['name'].invalid && signUpFormGroupControls['name'].errors">
+          <div *ngIf="signUpFormGroupControls['name'].errors['required'] && (signUpFormGroupControls['name'].dirty || signUpFormGroupControls['name'].touched)" class="error-color">ce champ est obligatoire</div>
+          <div *ngIf="signUpFormGroupControls['name'].errors['nameValidator'] && (signUpFormGroupControls['name'].dirty || signUpFormGroupControls['name'].touched)" class="error-color">ce champ ne doit pas contenir de caractere speciaux</div>
+        </div>
+        <label class="custom-label extra-margin-top" for="emailInput">Adresse e-mail</label>
+        <input class="custom-input" type="email" id="emailInput" formControlName="email">
+        <div *ngIf="signUpFormGroupControls['email'].invalid && signUpFormGroupControls['email'].errors">
+            <div *ngIf="signUpFormGroupControls['email'].errors['required'] && (signUpFormGroupControls['email'].dirty || signUpFormGroupControls['email'].touched)" class="error-color">ce champ est obligatoire</div>
+            <div *ngIf="signUpFormGroupControls['email'].errors['email']" class="error-color">ce champ doit contenir un email</div>
+        </div>
+        <label class="custom-label extra-margin-top" for="passwordInput">Mot de passe</label>
+        <div class="custom-pasword-wrap">
+          <input class="custom-input custom-pasword-input" [type] ="showPassword ? 'password' : 'text'" id="passwordInput" formControlName="password">
+          <i class="fa-regular fa-xl custom-show-password" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye purple-color'" (click)="togglePasswordVisibility()"></i>
+        </div>
+        <div *ngIf="signUpFormGroupControls['password'].invalid && signUpFormGroupControls['password'].errors">
+            <div *ngIf="signUpFormGroupControls['password'].errors['required'] && (signUpFormGroupControls['password'].dirty || signUpFormGroupControls['password'].touched)" class="error-color">ce champ est obligatoire</div>
+            <div *ngIf="signUpFormGroupControls['password'].errors['pattern'] && (signUpFormGroupControls['password'].dirty || signUpFormGroupControls['password'].touched)" class="error-color">ce champ doit contenir au moins une lettre Majiscule un charactere speciaux et un chiffre</div>
+        </div>  
+        <button  mat-raised-button class="custom-button extra-margin-top" type="submit" [disabled]="!signUpFormGroup.dirty || signUpFormGroup.invalid">Inscription</button>
+    </form>
+</div>
