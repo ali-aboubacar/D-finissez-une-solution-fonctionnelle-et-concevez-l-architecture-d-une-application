@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './core/page-not-found/page-not-found.component';
 import { authGuard } from './_helpers/auth.guard';
 import { ChatComponent } from './chat/chat.component';
+import { RouterModule, Routes } from '@angular/router';
 
 // consider a guard combined with canLoad / canActivate route option
 // to manage unauthenticated user to access private routes

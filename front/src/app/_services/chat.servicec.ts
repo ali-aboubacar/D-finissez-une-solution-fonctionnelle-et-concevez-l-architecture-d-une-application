@@ -1,6 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Client, IMessage, Stomp } from "@stomp/stompjs";
-import { Subject } from "rxjs";
+import { Client, IMessage, Stomp, StompSubscription } from "@stomp/stompjs";
+import { Observable, Subject } from "rxjs";
+import { TokenService } from "./token.service";
+import { io, Socket } from "socket.io-client";
+import { IChatMessage } from "../_interfaces/chat";
+import { HttpClient } from "@angular/common/http";
+
 
 
 @Injectable({
@@ -8,38 +13,42 @@ import { Subject } from "rxjs";
 })
 
 export class ChatService {
-    private client: Client;
-    private messageSubject = new Subject<any>();
-  
-    constructor() {
-      this.client = new Client({
-        brokerURL: 'ws://localhost:3002/ws', // Raw WebSocket URL
-        reconnectDelay: 5000,
-        onConnect: () => {
-          console.log('Connected!');
-          this.client.subscribe('/topic/messages', (msg: IMessage) => {
-            const body = JSON.parse(msg.body);
-            this.messageSubject.next(body);
-          });
-        },
-        onStompError: (frame) => {
-          console.error('STOMP error: ' + frame.body);
-        }
-      });
-  
-      this.client.activate(); // Connects automatically
-    }
-  
-    sendMessage(sender: string, content: string) {
-      const message = { sender, content, timestamp: '' };
-  
-      this.client.publish({
-        destination: '/api/chat',
-        body: JSON.stringify(message)
-      });
-    }
-  
-    getMessages() {
-      return this.messageSubject.asObservable();
-    }
+
+  private socket!: WebSocket;
+  private listeners: ((msg: IChatMessage) => void)[] = [];
+  private token = this.tokenService.getToken();
+  url = "http://localhost:3002";
+
+  constructor(private http: HttpClient, private tokenService: TokenService) {}
+
+  connect() {
+    this.socket = new WebSocket(`ws://localhost:3002/ws/chat?token=${this.token}`);
+    this.socket.onmessage = (e) => {
+      const msg: IChatMessage = JSON.parse(e.data);
+      this.listeners.forEach(fn => fn(msg));
+    };
+  }
+
+  sendMessage(recipient: string, content: string) {
+    const payload = JSON.stringify({ recipient, content });
+    this.socket.send(payload);
+  }
+
+  onMessage(callback: (msg: IChatMessage) => void) {
+    this.listeners.push(callback);
+  }
+
+  disconnect() {
+    this.socket?.close();
+  }
+
+  parseJwt(): string {
+    const payload = this.token!.split('.')[1];
+    console.log(JSON.parse(atob(payload)));
+    return JSON.parse(atob(payload)).sub;
+  }
+
+  getMessagesBetween(user1: string, user2: string): Observable<IChatMessage[]> {
+    return this.http.get<IChatMessage[]>(`${this.url}/api/chat/messages?sender=${user1}&recipient=${user2}`);
+  }
 }

@@ -1,7 +1,6 @@
 <app-header></app-header>
 <div class="form-wrap">
   <div class="header-wrap">
-    <i class="fa-solid fa-arrow-left fa-2xl  arrow-icon back-arrow" [routerLink]="['/']"></i>
     <h2>Se connecter</h2>
   </div>
   <form class="custom-form" [formGroup]="loginFormGoup" (ngSubmit)="onSubmit()">
@@ -20,6 +19,6 @@
         <div *ngIf="loginFormGoupControls['password'].errors['required'] && (loginFormGoupControls['password'].dirty || loginFormGoupControls['password'].touched)" class="error-color">ce champ est obligatoire</div>
         <div *ngIf="loginFormGoupControls['password'].errors['pattern'] && (loginFormGoupControls['password'].dirty || loginFormGoupControls['password'].touched)" class="error-color">ce champ doit contenir au moins une lettre Majiscule un charactere speciaux et un chiffre</div>
     </div>
-    <button  mat-raised-button class="custom-button extra-margin-top" type="submit" [disabled]="!loginFormGoup.dirty || loginFormGoup.invalid">Connexion</button>
+    <button class="custom-button extra-margin-top" type="submit" [disabled]="!loginFormGoup.dirty || loginFormGoup.invalid">Connexion</button>
 </form>
 </div>

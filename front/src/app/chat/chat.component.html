@@ -1,7 +1,35 @@
-<div>
-    <div *ngFor="let msg of messages">
-      <strong>{{ msg.sender }}</strong>: {{ msg.content }} <small>({{ msg.timestamp }})</small>
+<h2>Private Chat</h2>
+<div class="chat-wrap">
+    <div class="custom-form">
+        <div class="chat-dialogue" *ngFor="let msg of messages">
+            <b>{{ msg.sender }}:</b> {{ msg.content }}
+        </div>
+        <textarea class="message-input extra-margin-top" [(ngModel)]="message" placeholder="Type message"></textarea>
+        <button class="custom-button extra-margin-top" (click)="send()">Send</button>
     </div>
-    <input [(ngModel)]="message" placeholder="Type a message..." />
-    <button (click)="send()">Send</button>
+    <div>
+        <h2>All Users</h2>
+        <div class="users" *ngFor="let user of users">
+            <div class="user-display"  (click)="loadMessagesWith(user.email)">
+            {{ user.email }}
+            </div>
+        </div>
+  
+    </div>
+</div>
+
+<!-- <div class="users">
+    <div *ngFor="let user of users" (click)="loadMessagesWith(user.email)">
+      {{ user.email }}
+    </div>
   </div>
+  
+  <div class="chat-box">
+    <div *ngFor="let msg of messages">
+      <b>{{ msg.sender }}:</b> {{ msg.content }}
+    </div>
+  </div>
+  
+  <input [(ngModel)]="message" placeholder="Type a message" />
+  <button (click)="send()">Send</button> -->
+

@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+.form-wrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.custom-form{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+.custom-button{
+    height: 5vh;
+    background-color: #7763C5;
+    color: white;
+    border-radius: 10px !important;
+    cursor: pointer;
+}
+
+.extra-margin-top{
+    margin-top: 5%;
+}
+
+.custom-label{
+    margin-left: 1%;
+}
+.custom-input{
+    height: 5vh;    
+    border-radius: 7px;
+    border: 0.2px solid;
+}
+
+.custom-input:focus-visible{
+    border-color: #7763C5 !important;
+    outline: none;
+}

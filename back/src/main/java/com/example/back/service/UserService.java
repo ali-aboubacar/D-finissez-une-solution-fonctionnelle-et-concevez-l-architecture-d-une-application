@@ -1,16 +1,22 @@
 package com.example.back.service;
 
 import com.example.back.dtos.UserDto;
+import com.example.back.exception.BadRequestException;
 import com.example.back.exception.ResourceNotFoundException;
 import com.example.back.mapper.UserMapper;
+import com.example.back.model.ERole;
 import com.example.back.model.User;
 import com.example.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,10 +64,19 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public List<User> getAllUsers(){
+        UserDto currentUser = getCurrentUser();
+        Optional<User> requester = userRepository.findByEmail(currentUser.getEmail());
+        boolean hasAdminRole = requester.get().getRoles().stream()
+                .anyMatch(role -> role.getName() == ERole.ROLE_ADMIN);
+        if (hasAdminRole) {
+            return userRepository.findAll();
+        }else {
+            throw new BadRequestException("access denied");
+        }
 
 
-
-
+    }
     public UserDto getCurrentUser() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

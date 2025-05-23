@@ -1,0 +1,31 @@
+.chat-wrap{
+    display: flex;
+    justify-content: space-around;
+}
+
+.message-input{
+    height: 12vh;
+    resize: none;
+    border-radius: 7px;
+    border: 0.2px solid;
+}
+
+.chat-dialogue{
+    background: gray;
+    border-radius: 7px;
+    margin-top: 1%;
+    padding: 2%;
+    color: white;
+}
+
+.user-display{
+    height: 4vh;
+    margin-top: 2%;
+    border-radius: 7px;
+    border: 0.3px solid;
+    /* padding-left: 12%; */
+    text-align: center;
+    background-color: #7763C5;
+    color: white;
+    cursor: pointer;
+}
