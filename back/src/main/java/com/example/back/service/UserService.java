@@ -43,8 +43,13 @@ public class UserService {
      * @param email l'email a verifier.
      * @return true ou false apres verification
      */
-    public Boolean findByEmail(String email){
+    public Boolean existByEmail(String email){
         return userRepository.existsByEmail(email);
+    }
+
+    public User findByEmail(String email){
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return user;
     }
 
     /**

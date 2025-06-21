@@ -3,6 +3,7 @@ package com.example.back.service;
 import com.example.back.dtos.ChatDto;
 import com.example.back.mapper.ChatMapper;
 import com.example.back.model.Chat;
+import com.example.back.model.User;
 import com.example.back.repository.ChatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,19 +19,24 @@ public class ChatService {
     private ChatRepository chatRepository;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private ChatMapper chatMapper;
 
     public void saveMessage(ChatDto chatMessage) {
         Chat msgEntity = new Chat();
-        msgEntity.setSender(chatMessage.getSender());
-        msgEntity.setRecipient(chatMessage.getRecipient());
+        msgEntity.setSender(userService.findByEmail(chatMessage.getSender()));
+        msgEntity.setRecipient(userService.findByEmail(chatMessage.getRecipient()));
         msgEntity.setContent(chatMessage.getContent());
         msgEntity.setTimestamp(LocalDateTime.now());
         chatRepository.save(msgEntity);
     }
 
-    public List<ChatDto> getConversation(String sender, String recipient) {
+    public List<ChatDto> getConversation(String senderEmail, String recipientEmail) {
         List<Chat> messages = new ArrayList<>();
+        User sender = userService.findByEmail(senderEmail);
+        User recipient = userService.findByEmail(recipientEmail);
         messages.addAll(chatRepository.findChatBetweenUsers(sender, recipient));
         List<ChatDto> messagesDtos = messages.stream().map(chatMapper::toChatDto).collect(Collectors.toList());
         return messagesDtos;

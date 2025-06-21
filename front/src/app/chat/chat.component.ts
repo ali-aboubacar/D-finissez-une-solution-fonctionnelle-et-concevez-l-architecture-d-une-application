@@ -15,7 +15,7 @@ export class ChatComponent implements OnInit,OnDestroy{
     message = '';
     messages: IChatMessage[] = [];
     currentUser!: IUser;
-    users: any[] = [];
+    users: IUser[] = [];
   
     constructor(private chatService: ChatService, private userService: UserService) {}
   

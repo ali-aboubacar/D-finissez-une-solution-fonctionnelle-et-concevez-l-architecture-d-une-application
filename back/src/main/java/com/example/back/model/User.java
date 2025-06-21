@@ -43,6 +43,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+
+    @OneToMany(mappedBy = "sender")
+    private Set<Chat> sentMessages = new HashSet<>();
+
+    @OneToMany(mappedBy = "recipient")
+    private Set<Chat> receivedMessages = new HashSet<>();
     public User() {
 
     }

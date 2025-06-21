@@ -44,7 +44,6 @@ export class ChatService {
 
   parseJwt(): string {
     const payload = this.token!.split('.')[1];
-    console.log(JSON.parse(atob(payload)));
     return JSON.parse(atob(payload)).sub;
   }
 

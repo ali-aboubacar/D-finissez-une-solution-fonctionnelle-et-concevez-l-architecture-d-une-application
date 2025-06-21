@@ -13,9 +13,9 @@ public class ChatMapper {
         }
 
         ChatDto chatDto = new ChatDto();
-        chatDto.setSender(chat.getSender());
+        chatDto.setSender(chat.getSender().getEmail());
         chatDto.setContent(chat.getContent());
-        chatDto.setRecipient(chat.getRecipient());
+        chatDto.setRecipient(chat.getRecipient().getEmail());
         return chatDto;
     }
 }
