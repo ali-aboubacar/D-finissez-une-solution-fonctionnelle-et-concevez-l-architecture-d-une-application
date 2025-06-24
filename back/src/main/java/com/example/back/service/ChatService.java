@@ -5,6 +5,7 @@ import com.example.back.mapper.ChatMapper;
 import com.example.back.model.Chat;
 import com.example.back.model.User;
 import com.example.back.repository.ChatRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +34,10 @@ public class ChatService {
         chatRepository.save(msgEntity);
     }
 
+    @Transactional
     public List<ChatDto> getConversation(String senderEmail, String recipientEmail) {
         List<Chat> messages = new ArrayList<>();
-        User sender = userService.findByEmail(senderEmail);
-        User recipient = userService.findByEmail(recipientEmail);
-        messages.addAll(chatRepository.findChatBetweenUsers(sender, recipient));
+        messages.addAll(chatRepository.findChatBetweenUsers(senderEmail, recipientEmail));
         List<ChatDto> messagesDtos = messages.stream().map(chatMapper::toChatDto).collect(Collectors.toList());
         return messagesDtos;
     }

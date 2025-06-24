@@ -11,10 +11,10 @@ import java.util.List;
 
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
-    @Query("SELECT m FROM Chat m WHERE " +
-            "(m.sender = :user1 AND m.recipient = :user2) OR " +
-            "(m.sender = :user2 AND m.recipient = :user1) " +
+    @Query("SELECT m FROM Chat m " +
+            "WHERE (m.sender.email = :email1 AND m.recipient.email = :email2) " +
+            "   OR (m.sender.email = :email2 AND m.recipient.email = :email1) " +
             "ORDER BY m.timestamp ASC")
-    List<Chat> findChatBetweenUsers(@Param("user1") User user1, @Param("user2") User user2);
+    List<Chat> findChatBetweenUsers(@Param("email1") String email1, @Param("email2") String email2);
 
 }
